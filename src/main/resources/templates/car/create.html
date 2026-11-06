@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h3>Creation a new cars</h3>
+<div class="container-form">
+    <form th:method="post" th:action="@{/car/add(page=${page}, size=${size})}" th:object="${car}">
+        <label for="model">Модель: </label>
+        <input  id="model" th:field="*{model}">
+        <div th:if="${#fields.hasErrors('model')}" th:errors="*{model}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="marka">Марка: </label>
+        <input id="marka" th:field="*{marka}">
+        <div th:if="${#fields.hasErrors('marka')}" th:errors="*{marka}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="color">Цвет: </label>
+        <input id="color" th:field="*{color}">
+        <div th:if="${#fields.hasErrors('color')}" th:errors="*{color}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="speed">Скорость: </label>
+        <input type="number" id="speed" th:field="*{speed}">
+        <div th:if="${#fields.hasErrors('speed')}" th:errors="*{speed}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="place">Кол-во мест: </label>
+        <input type="number" id="place" th:field="*{place}">
+        <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="bodyType">Тип кузова:</label>
+        <select id="bodyType" th:field="*{type}">
+            <option value="">-- выберите --</option>
+            <option th:each="bt : ${bodyTypes}"
+                    th:value="${bt}"
+                    th:text="${bt.getType()}">
+            </option>
+        </select>
+        <hr>
+        <br>
+
+        <a th:href="@{/car(page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
+        <input type="submit" value="Save" class="btn btn-form">
+    </form>
+</div>
+</body>
+</html>

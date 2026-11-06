@@ -1,0 +1,122 @@
+
+.wrapper {
+    width: fit-content;
+    text-align: center;
+    margin: 50px auto;
+}
+
+
+.container {
+    display: flex;
+    background-color: cornflowerblue;
+    border-radius: 7px;
+    justify-content: space-evenly;
+    padding: 5px;
+}
+
+.container-form {
+    width: fit-content;
+    border: solid 2px darkslategray;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+.btn {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.btn-add-all {
+    background-color: magenta;
+    border: solid 1px magenta;
+}
+
+.btn-clear {
+    background-color: red;
+    border: solid 1px red;
+}
+
+.btn-clear:hover {
+    background-color: darkred;
+}
+
+.btn-add-all:hover {
+    background-color: darkmagenta;
+}
+
+.btn-delete {
+    background-color: red;
+}
+
+.btn-delete:hover {
+    background-color: darkred;
+}
+
+.btn-update {
+    background-color: dodgerblue;
+}
+
+.btn-update:hover {
+    background-color: blue;
+}
+
+.delete-update-section {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.btn-create {
+    background-color: lawngreen;
+    border: solid 1px lawngreen;
+}
+
+.btn-create:hover {
+    background-color: green;
+    border-radius: 7px;
+}
+
+.btn-form {
+    background-color: lightgray;
+    border: solid lightgray 1px;
+}
+
+.btn-form:hover {
+    background-color: lightslategray;
+}
+
+.errors {
+    color: red;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    gap: 7px;
+    border: solid 1px black;
+    border-radius: 7px;
+    width: fit-content;
+    padding: 10px;
+    background-color: lightblue;
+    margin: 16px auto;
+}
+
+li:hover {
+    background-color: green;
+
+}

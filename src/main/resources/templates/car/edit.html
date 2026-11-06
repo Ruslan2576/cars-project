@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h3>Update car</h3>
+<div class="container-form">
+    <form th:method="put" th:action="@{/car/update(page=${page}, size=${size})}" th:object="${car}">
+        <input type="hidden" th:field="*{id}">
+
+        <label for="model">Модель: </label>
+        <input type="text" id="model" th:field="*{model}">
+        <div th:if="${#fields.hasErrors('model')}" th:errors="*{model}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="marka">Марка: </label>
+        <input type="text" id="marka" th:field="*{marka}">
+        <div th:if="${#fields.hasErrors('marka')}" th:errors="*{marka}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="color">Цвет: </label>
+        <input type="text" id="color" th:field="*{color}">
+        <div th:if="${#fields.hasErrors('color')}" th:errors="*{color}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="speed">Скорость: </label>
+        <input type="number" id="speed" th:field="*{speed}">
+        <div th:if="${#fields.hasErrors('speed')}" th:errors="*{speed}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="place">Кол-во мест: </label>
+        <input type="number" id="place" th:field="*{place}">
+        <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}" class="errors"></div>
+        <hr>
+        <br>
+
+        <label for="bodyTypes">Тип кузова: </label>
+        <select id="bodyTypes" th:field="*{type}">
+            <option th:value="*{type}" th:text="*{type.getType()}"></option>
+            <option th:each="bt : ${bodyTypes}"
+                    th:value="${bt}"
+                    th:text="${bt.getType()}" ></option>
+        </select>
+        <hr>
+        <br>
+
+        <a th:href="@{/car(page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
+        <input type="submit" value="Update" class="btn btn-form">
+    </form>
+</div>
+</body>
+</html>
