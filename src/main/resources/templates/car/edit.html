@@ -8,7 +8,7 @@
 <body>
 <h3>Update car</h3>
 <div class="container-form">
-    <form th:method="put" th:action="@{/car/update(page=${page}, size=${size})}" th:object="${car}">
+    <form th:method="put" th:action="@{/car/update(sortBy=${sortBy},  page=${page}, size=${size})}" th:object="${car}">
         <input type="hidden" th:field="*{id}">
 
         <label for="model">Модель: </label>
@@ -51,7 +51,7 @@
         <hr>
         <br>
 
-        <a th:href="@{/car(page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
+        <a th:href="@{/car(sortBy=${sortBy}, page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
         <input type="submit" value="Update" class="btn btn-form">
     </form>
 </div>

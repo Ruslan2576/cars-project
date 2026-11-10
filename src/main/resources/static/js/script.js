@@ -11,27 +11,6 @@ const MAP = new Map([
 const tbody = document.querySelector('tbody')
 let rows = tbody.querySelectorAll('tr')
 
-function sortBy(value) {
-    if (!MAP.has(value)) return
-
-    const columnIndex = MAP.get(value)
-    rows = [... rows]
-
-    const sortedRows = rows.sort((a, b) => {
-        let cellA = a.cells[columnIndex].innerText.trim()
-        let cellB = b.cells[columnIndex].innerText.trim()
-
-        if (!isNaN(cellA) && !isNaN(cellB)) {
-            return cellA - cellB
-        }
-
-        return cellA.localeCompare(cellB)
-    })
-
-    sortedRows.forEach(row => tbody.append(row))
-}
-
-
 function search() {
     const input = document.getElementById('globalFilter')
     let value = input.value.toLowerCase()

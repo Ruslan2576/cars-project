@@ -8,7 +8,7 @@
 <body>
 <h3>Creation a new cars</h3>
 <div class="container-form">
-    <form th:method="post" th:action="@{/car/add(page=${page}, size=${size})}" th:object="${car}">
+    <form th:method="post" th:action="@{/car/add(sortBy=${sortBy},  page=${page}, size=${size})}" th:object="${car}">
         <label for="model">Модель: </label>
         <input  id="model" th:field="*{model}">
         <div th:if="${#fields.hasErrors('model')}" th:errors="*{model}" class="errors"></div>
@@ -50,7 +50,7 @@
         <hr>
         <br>
 
-        <a th:href="@{/car(page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
+        <a th:href="@{/car(sortBy=${sortBy},  page=${page}, size=${size})}" class="btn btn-form">Cancel</a>
         <input type="submit" value="Save" class="btn btn-form">
     </form>
 </div>

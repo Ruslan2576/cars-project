@@ -9,8 +9,8 @@
 
 <div class="wrapper">
     <div class="container">
-        <a th:href="@{/car/create(page=${currentPage}, size=${size})}" class="btn btn-create">Create⊕</a>
-        <a class="btn btn-add-all" th:href="@{/car/add-all(page=${currentPage}, size=${size})}">Add 5 Cars</a>
+        <a th:href="@{/car/create(sortBy=${sortBy}, page=${currentPage}, size=${size})}" class="btn btn-create">Create⊕</a>
+        <a class="btn btn-add-all" th:href="@{/car/add-all(sortBy=${sortBy}, page=${currentPage}, size=${size})}">Add 5 Cars</a>
         <a class="btn btn-clear" th:href="@{/car/clear(size=${size})}">Clear</a>
 
         <form style="margin-top: 5px" id="sizeForm" method="get" th:action="@{/car}">
@@ -23,19 +23,25 @@
                 <option th:value="100" th:selected="${size == 100}">100</option>
             </select>
             <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="sortBy" th:value="${sortBy}">
         </form>
 
-        <label style="margin-top: 5px"  for="sortBy">Sort by: </label>
-        <select id="sortBy" onchange="sortBy(this.value)">
-            <option value="">-- выберите --</option>
-            <option value="all">id</option>
-            <option value="model">model</option>
-            <option value="marka">marka</option>
-            <option value="color">color</option>
-            <option value="speed">speed</option>
-            <option value="place">place</option>
-            <option value="type">type</option>
-        </select>
+        <form th:action="@{/car}" method="get">
+            <label style="margin-top: 5px"  for="sortBy">Sort by: </label>
+            <select id="sortBy" name="sortBy" onchange="this.form.submit()">
+                <option value="">-- выберите --</option>
+                <option value="id" th:selected="${sortBy == 'id'}">id</option>
+                <option value="model" th:selected="${sortBy == 'model'}">model</option>
+                <option value="marka" th:selected="${sortBy == 'marka'}">marka</option>
+                <option value="color" th:selected="${sortBy == 'color'}">color</option>
+                <option value="speed" th:selected="${sortBy == 'speed'}">speed</option>
+                <option value="place" th:selected="${sortBy == 'place'}">place</option>
+                <option value="type" th:selected="${sortBy == 'type'}">type</option>
+            </select>
+
+            <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="size" th:value="${size}">
+        </form>
     </div>
 
     <div class="info">
@@ -45,17 +51,47 @@
 
 
     <div>
-        <input id="globalFilter" type="text" placeholder="🔎 Search car" onkeyup="search()">
-        <div class="search-container">
-            <label for="all">All<input type="radio" name="searchField" id="all" th:value="All"></label>
-            <label for="model">Model<input type="radio" name="searchField" id="model" th:value="model"></label>
-            <label for="marka">Marka<input type="radio" name="searchField" id="marka" th:value="marka"></label>
-            <label for="color">Color<input type="radio" name="searchField" id="color" th:value="color"></label>
-            <label for="speed">Speed<input type="radio" name="searchField" id="speed" th:value="speed"></label>
-            <label for="place">Place<input type="radio" name="searchField" id="place" th:value="place"></label>
-            <label for="type">Type<input type="radio" name="searchField" id="type" th:value="type"></label>
+        <form th:action="@{/car}" method="get">
+            <label for="globalFilter">Search by: </label>
+            <input id="globalFilter" type="text" name="query" th:value="${query}" placeholder="🔎 Search car">
+            <button type="submit">Search</button>
 
-        </div>
+            <div class="search-container">
+                <label for="all">All
+                    <input type="radio" name="searchField" id="all" value="all" th:checked="${searchField == 'all' or searchField == null}">
+                </label>
+
+                <label for="model">Model
+                    <input type="radio" name="searchField" id="model" value="model" th:checked="${searchField == 'model'}">
+                </label>
+
+                <label for="marka">Marka
+                    <input type="radio" name="searchField" id="marka" value="marka" th:checked="${searchField == 'marka'}">
+                </label>
+
+                <label for="color">Color
+                    <input type="radio" name="searchField" id="color" value="color" th:checked="${searchField == 'color'}">
+                </label>
+
+                <label for="speed">Speed
+                    <input type="radio" name="searchField" id="speed" value="speed" th:checked="${searchField == 'speed'}">
+                </label>
+
+                <label for="place">Place
+                    <input type="radio" name="searchField" id="place" value="place" th:checked="${searchField == 'place'}">
+                </label>
+
+                <label for="type">Type
+                    <input type="radio" name="searchField" id="type" value="type" th:checked="${searchField == 'type'}">
+                </label>
+            </div>
+
+            <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="size" th:value="${size}">
+            <input type="hidden" name="sortBy" th:value="${sortBy}">
+
+        </form>
+
     </div>
 
 
@@ -85,12 +121,14 @@
             <td th:text="${car.type.getType()}"></td>
 
             <td class="delete-update-section">
-                <form method="post" th:action="@{/car/edit/{id}(id=${car.id}, page=${currentPage}, size=${size})}">
+                <form method="post" th:action="@{/car/edit/{id}(id=${car.id}, sortBy=${sortBy}, page=${currentPage}, size=${size})}">
                     <input type="submit" value="Update" class="btn btn-update">
                 </form>
 
                 <form onsubmit="return confirm('Вы уверены что хотите удалить?')" th:method="delete"
-                      th:action="@{/car/delete/{id}(id=${car.id}, page=${currentPage}, size=${size})}">
+                      th:action="${cars.size() == 1 and currentPage > 0}
+                        ? @{/car/delete/{id}(id=${car.id}, sortBy=${sortBy},  page=${currentPage - 1}, size=${size})}
+                        : @{/car/delete/{id}(id=${car.id}, sortBy=${sortBy},  page=${currentPage}, size=${size})}">
                     <input type="submit" value="Delete" class="btn btn-delete">
                 </form>
             </td>
@@ -101,15 +139,18 @@
 
     <nav>
         <ul th:if="${totalPages > 0}" class="pagination">
-            <li th:if="${currentPage > 1}"><a th:href="@{/car(page=${currentPage - 1}, size=${size})}">Previous</a></li>
+            <li th:if="${currentPage >= 1}">
+                <a th:href="@{/car(sortBy=${sortBy}, page=${currentPage - 1}, size=${size})}">Previous</a>
+            </li>
 
             <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
                 <a th:style="${i == currentPage} ? 'background-color: green;' : ''"
-                   th:href="@{/car(page=${i}, size=${size})}" th:text="${i + 1}"></a>
+                   th:href="@{/car(sortBy=${sortBy}, page=${i}, size=${size})}" th:text="${i + 1}"></a>
             </li>
 
             <li th:if="${currentPage < totalPages - 1}"><a
-                    th:href="@{/car(page=${currentPage + 1}, size=${size})}">Next</a></li>
+                    th:href="@{/car(sortBy=${sortBy}, page=${currentPage + 1}, size=${size})}">Next</a>
+            </li>
         </ul>
     </nav>
 </div>
